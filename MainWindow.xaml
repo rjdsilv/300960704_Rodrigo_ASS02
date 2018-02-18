@@ -1,12 +1,180 @@
-﻿<Window x:Class="_300960704_Rodrigo_ASS02.MainWindow"
+﻿<Window x:Name="MainWindow1" x:Class="_300960704_Rodrigo_ASS02.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:ds="clr-namespace:_300960704_Rodrigo_ASS02.DataSources"
         xmlns:local="clr-namespace:_300960704_Rodrigo_ASS02"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="Rodrigo's Restaurant Bill Calculator"
+        Height="653"
+        Width="767"
+        ResizeMode="CanMinimize">
+
+    <Window.Resources>
+        <CollectionViewSource Source="{Binding Source={x:Static Application.Current}, Path=Beverages}" x:Key="beverageDataView" />
+        <CollectionViewSource Source="{Binding Source={x:Static Application.Current}, Path=Appetizers}" x:Key="appetizerDataView" />
+        <CollectionViewSource Source="{Binding Source={x:Static Application.Current}, Path=MainCourses}" x:Key="mainCourseDataView" />
+        <CollectionViewSource Source="{Binding Source={x:Static Application.Current}, Path=Desserts}" x:Key="dessertDataView" />
+
+        <DataTemplate x:Key="ComboBoxDataTemplate" DataType="{x:Type ds:RestaurantItem}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="105" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Row="0" Grid.Column="0" Text="{Binding Path=Name}"/>
+                <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding Path=Price}"/>
+            </Grid>
+        </DataTemplate>
+    </Window.Resources>
+
     <Grid>
-        
+        <StatusBar x:Name="ApplicationStatusBar" HorizontalAlignment="Left" Height="88" VerticalAlignment="Top" Width="752">
+            <Image x:Name="LogoImage" Source="Resources/Logo.png" />
+            <Label x:Name="NameLabel" Content="Rodrigo Januario da Silva" FontFamily="Calibri" FontSize="44" FontWeight="Bold"/>
+        </StatusBar>
+        <GroupBox x:Name="RestaurantItemsGroupBox" Header="  Restaurant Items  " HorizontalAlignment="Left" Height="84" Margin="11,93,0,0" VerticalAlignment="Top" Width="731">
+            <Canvas x:Name="RestaurantItemsCanvas" HorizontalAlignment="Left" Height="76" Margin="-6,-6,-2,-8" VerticalAlignment="Top" Width="727">
+                <Label x:Name="BeverageLabel" Content="Beverages:" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="6" Canvas.Top="11"/>
+                <ComboBox x:Name="BeverageComboBox"
+                          HorizontalAlignment="Left"
+                          VerticalAlignment="Top"
+                          Width="170"
+                          Canvas.Left="10"
+                          Canvas.Top="35"
+                          ItemTemplate="{StaticResource ComboBoxDataTemplate}"
+                          SelectedIndex="0"
+                          SelectionChanged="BeverageComboBox_SelectionChanged">
+                    <ComboBox.ItemsSource>
+                        <CompositeCollection>
+                            <ComboBoxItem IsEnabled="False">-- Please Select --</ComboBoxItem>
+                            <CollectionContainer Collection="{Binding Source={StaticResource beverageDataView}}"/>
+                        </CompositeCollection>
+                    </ComboBox.ItemsSource>
+                </ComboBox>
+
+                <Label x:Name="AppetizerLabel" Content="Appetizers:" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="185" Canvas.Top="11"/>
+                <ComboBox x:Name="AppetizerComboBox" 
+                          HorizontalAlignment="Left" 
+                          VerticalAlignment="Top" 
+                          Width="170" 
+                          Canvas.Left="189" 
+                          Canvas.Top="35"
+                          SelectedIndex="0"
+                          ItemTemplate="{StaticResource ComboBoxDataTemplate}" SelectionChanged="AppetizerComboBox_SelectionChanged">
+                    <ComboBox.ItemsSource>
+                        <CompositeCollection>
+                            <ComboBoxItem IsEnabled="False">-- Please Select --</ComboBoxItem>
+                            <CollectionContainer Collection="{Binding Source={StaticResource appetizerDataView}}"/>
+                        </CompositeCollection>
+                    </ComboBox.ItemsSource>
+                </ComboBox>
+
+                <Label x:Name="MainCourseLabel" Content="Main Courses:" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="363" Canvas.Top="11"/>
+                <ComboBox x:Name="MainCourseComboBox" 
+                          HorizontalAlignment="Left" 
+                          VerticalAlignment="Top" 
+                          Width="170" 
+                          Canvas.Left="369" 
+                          Canvas.Top="35"
+                          SelectedIndex="0"
+                          ItemTemplate="{StaticResource ComboBoxDataTemplate}" SelectionChanged="MainCourseComboBox_SelectionChanged">
+                    <ComboBox.ItemsSource>
+                        <CompositeCollection>
+                            <ComboBoxItem IsEnabled="False">-- Please Select --</ComboBoxItem>
+                            <CollectionContainer Collection="{Binding Source={StaticResource mainCourseDataView}}"/>
+                        </CompositeCollection>
+                    </ComboBox.ItemsSource>
+                </ComboBox>
+
+                <Label x:Name="DessertLabel" Content="Desserts:" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="543" Canvas.Top="11"/>
+                <ComboBox x:Name="DessertComboBox" 
+                          HorizontalAlignment="Left" 
+                          VerticalAlignment="Top" 
+                          Width="170" 
+                          Canvas.Left="549" 
+                          Canvas.Top="36"
+                          SelectedIndex="0"
+                          ItemTemplate="{StaticResource ComboBoxDataTemplate}" SelectionChanged="DessertComboBox_SelectionChanged">
+                    <ComboBox.ItemsSource>
+                        <CompositeCollection>
+                            <ComboBoxItem IsEnabled="False">-- Please Select --</ComboBoxItem>
+                            <CollectionContainer Collection="{Binding Source={StaticResource dessertDataView}}"/>
+                        </CompositeCollection>
+                    </ComboBox.ItemsSource>
+                </ComboBox>
+
+            </Canvas>
+        </GroupBox>
+        <DataGrid x:Name="BillGrid"
+              HorizontalAlignment="Left" 
+              Height="353"
+              Margin="10,188,0,0"
+              VerticalAlignment="Top"
+              Width="730"
+              AutoGenerateColumns="False"
+        >
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Item Name" Width="*" Binding="{Binding Name}">
+                    <DataGridTextColumn.HeaderStyle>
+                        <Style>
+                            <Setter Property="TextBlock.FontSize" Value="13"/>
+                            <Setter Property="TextBlock.FontWeight" Value="Bold"/>
+                        </Style>
+                    </DataGridTextColumn.HeaderStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="Category" Width="200" Binding="{Binding Category}" >
+                    <DataGridTextColumn.HeaderStyle>
+                        <Style>
+                            <Setter Property="TextBlock.FontSize" Value="13"/>
+                            <Setter Property="TextBlock.FontWeight" Value="Bold"/>
+                        </Style>
+                    </DataGridTextColumn.HeaderStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="Price" Width="120" Binding="{Binding Price}">
+                    <DataGridTextColumn.HeaderStyle>
+                        <Style>
+                            <Setter Property="TextBlock.FontSize" Value="13"/>
+                            <Setter Property="TextBlock.FontWeight" Value="Bold"/>
+                        </Style>
+                    </DataGridTextColumn.HeaderStyle>
+                    <DataGridTextColumn.ElementStyle>
+                        <Style>
+                            <Setter Property="TextBlock.TextAlignment" Value="Right" />
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="Quantity" Width="120" Binding="{Binding Quantity}">
+                    <DataGridTextColumn.HeaderStyle>
+                        <Style>
+                            <Setter Property="TextBlock.FontSize" Value="13"/>
+                            <Setter Property="TextBlock.FontWeight" Value="Bold"/>
+                        </Style>
+                    </DataGridTextColumn.HeaderStyle>
+                    <DataGridTextColumn.ElementStyle>
+                        <Style>
+                            <Setter Property="TextBlock.TextAlignment" Value="Right" />
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+        <Button x:Name="CloseBillButton"
+                Content="Close Bill"
+                HorizontalAlignment="Left"
+                Margin="220,555,0,0"
+                VerticalAlignment="Top"
+                Width="286"
+                RenderTransformOrigin="-0.44,-0.15"
+                Height="46"
+                FontSize="24"
+                FontWeight="Bold"
+                FontFamily="Calibri" Click="CloseBillButton_Click" />
     </Grid>
 </Window>
