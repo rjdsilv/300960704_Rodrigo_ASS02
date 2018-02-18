@@ -98,7 +98,7 @@ namespace _300960704_Rodrigo_ASS02
                 bill.Add(new RestaurantItem("Subtotal (No taxes)", "", 0, 0));
                 bill.Add(new RestaurantItem("Taxes (HST 13%)", "", 0, 0));
                 bill.Add(new RestaurantItem("Total (Taxes included)", "", 0, 0));
-                CloseBillButton.IsEnabled = true;
+                CloseBillButton.IsEnabled = false;
             }
         }
 
