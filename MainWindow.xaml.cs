@@ -84,9 +84,9 @@ namespace _300960704_Rodrigo_ASS02
         /// <param name="e">The event arguments.</param>
         private void CloseBillButton_Click(object sender, RoutedEventArgs e)
         {
-            if (MessageBoxResult.Yes == MessageBox.Show("Are you sure you want to close the bill?", "Rodrigo's Restaurant Bill Calculator", MessageBoxButton.YesNo, MessageBoxImage.Question))
+            if (MessageBoxResult.Yes == MessageBox.Show(this, "Are you sure you want to close the bill?", "Rodrigo's Restaurant Bill Calculator", MessageBoxButton.YesNo, MessageBoxImage.Question))
             {
-                MessageBox.Show("Bill successfully closed.\n" +
+                MessageBox.Show(this, "Bill successfully closed.\n" +
                     $"\tSubtotal (No taxes)\t: {bill[bill.Count - 3].Price}\n" +
                     $"\tTaxes (HST 13%)\t\t: {bill[bill.Count - 2].Price}\n" +
                     $"\tTotal (Taxes Included)\t: {bill[bill.Count - 1].Price}\n",
