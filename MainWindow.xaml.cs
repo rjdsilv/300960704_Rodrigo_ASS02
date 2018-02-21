@@ -94,6 +94,12 @@ namespace _300960704_Rodrigo_ASS02
                     MessageBoxButton.OK,
                     MessageBoxImage.Information
                 );
+
+                foreach (RestaurantItem item in bill)
+                {
+                    item.Quantity = 0;
+                }
+
                 bill.Clear();
                 bill.Add(new RestaurantItem("Subtotal (No taxes)", "", 0, 0));
                 bill.Add(new RestaurantItem("Taxes (HST 13%)", "", 0, 0));
